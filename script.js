@@ -15,15 +15,15 @@ submit.addEventListener('click', () => {
     const length = parseInt(pLength.value);
     let initPwd = '';
 
+    if (getCheckedCount([upperCase, lowerCase, pNumber, pSymbol]) < 2) {
+        alert("Please select at least two options.");
+        return;
+    }
+
     if (upperCase.checked) initPwd += uCase;
     if (lowerCase.checked) initPwd += lCase;
     if (pNumber.checked) initPwd += number;
     if (pSymbol.checked) initPwd += symbol;
-
-    if (initPwd === '') {
-        alert("Please select at least one option.");
-        return;
-    }
 
     password.value = generatePwd(length, initPwd);
 });
@@ -51,3 +51,7 @@ copy.addEventListener('click', () => {
         }, 7000);
     }
 });
+
+function getCheckedCount(checkboxes) {
+    return checkboxes.filter(checkbox => checkbox.checked).length;
+}
