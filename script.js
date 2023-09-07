@@ -1,4 +1,3 @@
-const empty = "";
 const uCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const lCase = "abcdefghijklmnopqrstuvwxyz";
 const number = "0123456789";
@@ -12,72 +11,43 @@ const pSymbol = document.getElementById('psymbol');
 const submit = document.getElementById('submit');
 const password = document.getElementById('pwd');
 
-submit.addEventListener('click', ()=>{
-    let initPwd = empty;
-    (upperCase.checked) ? initPwd += uCase : "";
-    (lowerCase.checked) ? initPwd += lCase : "";
-    (pNumber.checked) ? initPwd += number : "";
-    (pSymbol.checked) ? initPwd += symbol : "";
+submit.addEventListener('click', () => {
+    const length = parseInt(pLength.value);
+    let initPwd = '';
 
-    password.value = generatePwd(pLength.value,initPwd);
+    if (upperCase.checked) initPwd += uCase;
+    if (lowerCase.checked) initPwd += lCase;
+    if (pNumber.checked) initPwd += number;
+    if (pSymbol.checked) initPwd += symbol;
+
+    if (initPwd === '') {
+        alert("Please select at least one option.");
+        return;
+    }
+
+    password.value = generatePwd(length, initPwd);
 });
 
-$("#pwdcopy").hide();
-
-$("#puppercase").click(function(){
-    if($(this).prop("checked") == true){
-        $("#uppertxt").css("color", "darkgreen").css("font-weight", "bolder").css("font-size", "19px");
-    }
-    else if($(this).prop("checked") == false){
-        $("#uppertxt").css("color", "black").css("font-weight", "500").css("font-size", "16px");
-    }
-});
-
-$("#plowercase").click(function(){
-    if($(this).prop("checked") == true){
-        $("#lowertxt").css("color", "darkgreen").css("font-weight", "bolder").css("font-size", "19px");
-    }
-    else if($(this).prop("checked") == false){
-        $("#lowertxt").css("color", "black").css("font-weight", "500").css("font-size", "16px");
-    }
-});
-
-$("#pnumber").click(function(){
-    if($(this).prop("checked") == true){
-        $("#numtxt").css("color", "darkgreen").css("font-weight", "bolder").css("font-size", "19px");
-    }
-    else if($(this).prop("checked") == false){
-        $("#numtxt").css("color", "black").css("font-weight", "500").css("font-size", "16px");
-    }
-});
-
-$("#psymbol").click(function(){
-    if($(this).prop("checked") == true){
-        $("#spltxt").css("color", "darkgreen").css("font-weight", "bolder").css("font-size", "19px");
-    }
-    else if($(this).prop("checked") == false){
-        $("#spltxt").css("color", "black").css("font-weight", "500").css("font-size", "16px");
-    }
-});
-
-function generatePwd(l, initPwd){
-    let pass = "";
-    for (let i=0;i<l;i++){
-        pass += initPwd.charAt(Math.floor(Math.random() * initPwd.length));
+function generatePwd(length, initPwd) {
+    let pass = '';
+    const initPwdLength = initPwd.length;
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * initPwdLength);
+        pass += initPwd.charAt(randomIndex);
     }
     return pass;
 }
 
 const copy = document.getElementById('copy');
-copy.addEventListener('click', ()=> {
-    if(password.value == ""){
+copy.addEventListener('click', () => {
+    if (password.value === '') {
         alert("Please generate a password!");
-    }else{
+    } else {
         password.select();
         document.execCommand("copy");
         $("#pwdcopy").show();
-        setTimeout(function(){
+        setTimeout(function () {
             $("#pwdcopy").hide();
-        },7000);
+        }, 7000);
     }
 });
